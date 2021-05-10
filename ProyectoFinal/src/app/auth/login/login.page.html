@@ -1,0 +1,31 @@
+
+
+<ion-content>
+  <ion-grid>
+    
+    <ion-row>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+      <ion-col>
+        <ion-card style="width: 400px;">
+          <ion-card-header><h1>Login</h1></ion-card-header>
+          <ion-card-content>
+            <ion-label color="danger " *ngIf = "error">El correo o la contraseña son incorrectas.</ion-label><br>
+            <ion-label>Correo electrónico:</ion-label>
+            <ion-input type="text" placeholder="Correo" [(ngModel)] = "correo"></ion-input>
+            <ion-label>Contraseña:</ion-label>
+            <ion-input type="password" placeholder="Contraseña" [(ngModel)] = "contrasena"></ion-input>
+            <ion-item style="width: 40%; height: 35px;">
+              <ion-checkbox color="secondary" style="margin-top: 0px;" [(ngModel)] = "recuerda"></ion-checkbox><ion-label style="margin-top: -5px; margin-left: 2px;">Recordarme</ion-label>
+            </ion-item>
+            <ion-button (click)="login()">Iniciar sesión</ion-button>
+            <ion-button (click) = "register()">Registarse</ion-button>
+          </ion-card-content>
+          
+        </ion-card>
+      </ion-col>
+      <ion-col></ion-col>
+      <ion-col></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

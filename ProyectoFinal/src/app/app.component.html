@@ -1,0 +1,29 @@
+<ion-app >
+  <ion-header [translucent]="true" *ngIf='isLogged'>
+    <ion-toolbar >
+      <ion-segment value="all">
+        <div style="height: 60px; width: 100px;">
+          <img src= "../assets/icon/icono_app.png" style="height: 55px;"/>
+        </div>
+        <ion-segment-button value="recetas" routerLink = "/recetas">
+          Recetas
+        </ion-segment-button>
+        <ion-segment-button value="semana" routerLink = "/semana">
+          Semana
+        </ion-segment-button>
+        <ion-segment-button value="config" routerLink="/config">
+          Configuración
+        </ion-segment-button>
+        <div style="margin-top: 1%;padding-left: 50px;">
+          <ion-label>{{nombre}}</ion-label>
+          <ion-button style="font-size: 10px; margin-top: -1%;" size="small" color="danger" (click)="logout()">Cerrar sesión</ion-button>
+        </div>
+      </ion-segment>
+    </ion-toolbar>
+    
+  </ion-header>
+  
+  <ion-content>
+    <ion-router-outlet></ion-router-outlet>
+  </ion-content>
+</ion-app>

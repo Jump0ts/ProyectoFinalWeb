@@ -1,0 +1,106 @@
+<ion-content class="fondo">
+  <ion-grid  class="gridGlob">
+    <ion-col>
+      <ion-row >
+        <ion-grid>
+          <ion-button color="dark" class="anadir" [routerLink] = "['/new-receta']">Nueva Receta</ion-button>
+          <ion-card>
+            <ion-card-content>
+              <ion-row>
+              <ion-col size="2">
+              <ion-input type="text" placeholder="Receta" style="width: 200px;"  [(ngModel)]="nombre"> </ion-input>
+              <ion-button (click)="buscar()">Buscar</ion-button><br>
+            </ion-col>
+            <ion-col size="2">
+              <ion-row><ion-checkbox [(ngModel)]="vegie"></ion-checkbox><ion-label>Vegetarian@</ion-label></ion-row>
+              <ion-row><ion-checkbox [(ngModel)]="vegan"></ion-checkbox><ion-label>Vegan@</ion-label></ion-row>
+              <ion-row><ion-checkbox [(ngModel)]="fishFree"></ion-checkbox><ion-label>Sin pescado</ion-label></ion-row>
+            </ion-col>
+            <ion-col size="3">
+              <ion-row><ion-checkbox [(ngModel)]="glutenFree"></ion-checkbox><ion-label>Sin gluten</ion-label></ion-row>
+              <ion-row><ion-checkbox [(ngModel)]="sugarFree"></ion-checkbox><ion-label>Sin azúcar</ion-label></ion-row>
+              <ion-row><ion-checkbox [(ngModel)]="saltFree"></ion-checkbox><ion-label>Sin sal</ion-label></ion-row>
+            </ion-col>
+            <ion-col size="2">
+            <ion-list >
+                <ion-radio-group value="todas">
+                  <ion-row style="margin-bottom: 15px;"><ion-radio value="todas" (click)="copiarRecetas()"></ion-radio><ion-label style="margin-top: 0%; "><b>Todas</b></ion-label></ion-row>
+                  <ion-row style="margin-bottom: 15px;"><ion-radio value="masTarde" (click)="mostrarMasTarde()"></ion-radio><ion-label style="margin-top: 0%; "><b>Ver más tarde</b></ion-label></ion-row>
+                  <ion-row style="margin-bottom: 15px;"><ion-radio value="favoritas" (click)="mostrarFavoritas()"></ion-radio><ion-label style="margin-top: 0%; "><b>Favoritas</b></ion-label></ion-row>
+                  <ion-row *ngIf="this.controlador.getUsuario().admin" style="margin-bottom: 15px;"><ion-radio value="noVerficadas" (click)="mostrarNoVerificadas()"></ion-radio><ion-label style="margin-top: 0%; "><b>Sin verificar</b></ion-label></ion-row>
+                </ion-radio-group>
+              </ion-list>
+            </ion-col>
+            <ion-col *ngIf="noVerificadas==false" size="3">
+              <ion-list>
+              <ion-radio-group value="fecha">
+                <ion-row style="margin-bottom: 15px;">
+                  <ion-radio value="fecha" (click)="copiarRecetas()"></ion-radio><ion-label style="margin-top: 0%; "><b>Ordenar por fecha</b></ion-label>
+                </ion-row>
+                <ion-row style="margin-bottom: 15px;" >
+                  <ion-radio value="likes" (click)="ordenarLikes()"></ion-radio><ion-label style="margin-top: 0%; "><b>Ordenar por likes</b></ion-label>
+                </ion-row>
+              </ion-radio-group>
+            </ion-list>
+            </ion-col>
+            </ion-row>
+            </ion-card-content>
+            
+          </ion-card>
+        </ion-grid>
+      </ion-row>
+      <!--<ion-virtual-scroll [items]="recetas" approxItemHeight="200px"  *virtualItem="let receta">-->
+        <div id="contenedorRecetas">
+        <ion-card *ngFor="let receta of recetas" class="receta">
+            <ion-grid>
+             <ion-row>
+             <ion-col size="3">
+                <ion-img [src]="receta.foto" style="width: 250px; height:175px;" (click)="clickReceta(receta.id)"></ion-img>
+              </ion-col>
+             <ion-col size="9">
+                <ion-card-header>
+                  <ion-card-title>
+                    <ion-label style="font-size: 25px;">
+                      <b>{{receta.titulo}}</b>
+                    </ion-label>
+                  </ion-card-title>
+                  <div style="margin-top: -3%; float: right; margin-right: 50px;" *ngIf="receta.verificado==true">
+                    <ion-img *ngIf="this.controlador.getUsuario().masTarde.indexOf(receta)==-1" src="../../../assets/icon/anadir-mas-tarde.png" style="position: absolute; height: 50px; width: 50px; margin-top: -3%; margin-left: -50px;" (click)="anadirMasTarde(receta)"></ion-img>
+                    <ion-img *ngIf="this.controlador.getUsuario().masTarde.indexOf(receta)!=-1" src="../../../assets/icon/quitar-mas-tarde.png" style="position: absolute; height: 50px; width: 50px; margin-top: -3%; margin-left: -50px;" (click)="quitarMasTarde(receta)"></ion-img>
+                    <ion-label style="font-size: 20px;"><b>{{receta.likes.length}}</b></ion-label>
+                    <ion-img src="../../../assets/icon/like_azul.png" style="position: absolute; height: 50px; width: 50px; margin-top: -6%; margin-left: 10px;"></ion-img>
+                  </div>
+                </ion-card-header>
+                <ion-card-content>
+                  {{receta.descripcion}}
+                </ion-card-content>
+              </ion-col>
+              </ion-row>
+            </ion-grid> 
+        </ion-card> 
+        <ion-card *ngIf="this.recetas.length==0" class="receta">
+          <ion-grid>
+            <ion-row>
+            <ion-col size="3">
+               <ion-img src="../../../assets/icon/sin-foto-comida.png" style="width: 250px; height:175px;" ></ion-img>
+             </ion-col>
+            <ion-col size="9">
+               <ion-card-header>
+                 <ion-card-title>
+                   <ion-label style="font-size: 25px;">
+                     <b>NO HAY NINGUNA RECETA EN ESTA LISTA</b>
+                   </ion-label>
+                 </ion-card-title>
+                 </ion-card-header>
+             </ion-col>
+             </ion-row>
+           </ion-grid> 
+        </ion-card>
+        </div>
+              <!--</ion-virtual-scroll>-->
+      
+    </ion-col>
+  </ion-grid>
+
+
+</ion-content>
